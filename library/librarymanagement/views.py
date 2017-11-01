@@ -139,7 +139,7 @@ def add_book(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def authors(request):
     """
-    Auhors view
+    Auhors vie/changed something
     """
     if request.user.is_authenticated:
         print ("%s in authors page " %(request.user))
