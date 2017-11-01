@@ -138,6 +138,9 @@ def add_book(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def authors(request):
+    """
+    Auhors view
+    """
     if request.user.is_authenticated:
         print ("%s in authors page " %(request.user))
         authors_list = Author.objects.order_by("first_name")
