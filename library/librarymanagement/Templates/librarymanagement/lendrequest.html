@@ -1,0 +1,62 @@
+{% extends "librarymanagement\index.html" %}
+{% block content %}
+	
+<h3 id="title">Lend Requests</h3>
+<div class="pagination">
+                <span class="step-links">
+                {% if lend_list.has_previous %}
+                    <a href="?page={{ lend_list.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                      Page {{ lend_list.number }} of {{ lend_list.paginator.num_pages }}.
+                </span>
+
+                {% if lend_list.has_next %}
+                      <a href="?page={{ lend_list.next_page_number }}">next</a>
+                {% endif %}
+                </span>
+</div>
+<div class = "book_data_list"> 
+        
+        <table class="table">
+            <tr>  
+                <th>SL.NO</th>
+            	<th>User</th>
+                <th>Date of Request</th> 
+                <th>Book</th>
+                <th>Status</th>
+                <th>Response</th>
+            </tr>
+            {% for lend in lend_list %}
+
+            <tr>
+                <td>{{forloop.counter}}</td>
+            	<td>{{lend.user}}</td>
+                <td>{{lend.date}}</td> 
+                {%for book in lend.book.all%}
+                    <td>{{book.book_title}}</td>
+                {%endfor%}             
+                <td>{{lend.status}}</td>
+                <td class="decision">
+                    <form action = "{% url 'approve_lend_request' lend.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="approve">Approve</button>
+                     </form>
+
+                     <form action = "{% url 'reject_lend_request' lend.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="reject">Reject</button>
+                     </form>
+                </td>
+            </tr>
+             {%endfor%}   
+        </table>
+            
+</div>
+
+
+
+
+{% endblock %}
+	    

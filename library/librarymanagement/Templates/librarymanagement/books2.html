@@ -1,0 +1,92 @@
+
+{% extends "librarymanagement\index.html" %}
+
+{% block content %}
+<h3 id="title">Books</h3>
+        <div class= "book_topnav">
+             {% if request.user.is_superuser %}
+            <input type="button" id="add_book" value="Add Book" />
+            <div id="book_dialog" style="display: none" align = "left">
+               
+                <form action = "{% url 'add_book' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <p>Title</p>
+                    <input  type="text" name="book_title">
+                    <p>Author</p>
+                    <select name="authors" multiple class="multiple_authors" >
+                    {% for author in authors_list %}
+                       
+                           <option value="{{author.id}}">{{author.first_name}} {{author.last_name}}</option>
+                       
+                    {%endfor%}
+                    </select>
+                    <p>Description</p>
+                    <input type="text" name="description">
+                    <p>stock_count</p>
+                    <input type="text" name="stock_count">
+                    <br><br>
+                    <input  type="file" name="photo" accept="image/*">
+
+                    <button id="book_submit">Submit data</button>
+                </form>
+            </div>
+            {% endif %}
+            <div class="pagination">
+                <span class="step-links">
+                {% if books_info.has_previous %}
+                    <a href="?page={{ books_info.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                      Page {{ books_info.number }} of {{ books_info.paginator.num_pages }}.
+                </span>
+
+                {% if books_info.has_next %}
+                      <a href="?page={{ books_info.next_page_number }}">next</a>
+                {% endif %}
+                </span>
+            </div>
+        </div>
+
+
+    <div class = "book_data_list"> 
+         
+        <div class="bookdiv">
+          {% for books in books_info %}
+         
+                {%for image in books.photos.all%}
+                {% if forloop.first %}
+                    <div class="books_images">
+                        <img  class ="book" src="{{image.photo.url}}" onclick="window.location.href= {% url 'book_details' books.id %}" />
+                    </div>
+                {% endif %}
+                {%endfor%}
+                <table class="book_table">
+                <tr>
+                    <td>TITLE: </td>
+                    <td>{{books.book_title}}</td>
+                </tr>
+                <tr>
+                    <td>AUTHOR:    </td>
+                    {%for author in books.authors.all%}
+                        <td class=listing>{{author.first_name}} {{author.last_name}} </td>
+                    {%endfor%}  
+                </tr>           
+                <tr>
+                    <td>STOCK COUNT:</td>
+                    <td>{{books.stock_count}}</td>
+                </tr>
+                <tr>
+                     <td>REVIEW:   </td>
+                    {%for review in books.reviews.all%}
+                        <td>{{review.review}}</td>
+                    {%endfor%}   
+                </tr>  
+                </table>    
+            {%endfor%}
+        </div>
+    </div>
+{% endblock %}
+
+	    

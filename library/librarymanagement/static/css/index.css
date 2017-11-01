@@ -1,0 +1,532 @@
+body {
+    margin: 0 ;
+	padding: 0;
+}
+.container{
+	background-color: #F3F3F3;
+	padding:0;
+	
+}
+header{
+	height:70px;
+	width:100%;
+	padding:0;
+	margin: 0 ;
+	background-color:  black;
+	\\color:white;
+	/*border:1px solid pink;*/
+
+}
+#header_top p{
+	width:154px;
+	margin-right:0;
+	float:right;
+	cursor: pointer;
+}
+#header_top a{
+	text-decoration: none;
+	color:dimgray;
+	font-size: 13px;
+}
+#header_top a:hover{
+	color: white;
+}
+
+#header_center{
+	width:100%;
+	height:68px;
+	/*border:1px solid black;*/
+	background-color: #FFFFFF;
+	float:left;
+	background-color:  black;
+
+}
+#header_center p{
+	margin-top:9px;
+	display: inline-block;
+	color:white;
+	float: right;
+    margin-right: 64px;
+
+}
+
+#header_center a{
+	margin-right:0 px;
+	text-decoration: none;
+	color: white;
+	padding: 10px 39px 9px 50px;
+	
+}
+#logout{
+	
+	color:black;
+	margin-left:890px;
+}
+
+#login_dialog{
+    color: white;
+	background-color: black;
+	border:none;	
+}
+
+#login{
+	
+	color:white;
+	margin-left:700px;
+}
+#header_center a:hover{
+	background-color:#CB202D;
+}
+.nav_bar{
+	/*border:1px solid red;*/
+	width:100%;
+	height:100px;
+	color:white;
+}
+.nav_bar ul {
+    list-style-type: none;
+    margin-left: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.nav_bar li {
+    float: left;
+    width:334px;
+    border-top: 2px #CB202D;
+}
+.nav_bar a:hover{
+	background-color:  #CB202D;
+}
+
+.nav_bar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 30px;
+}
+hr{
+	color:white;
+	width:1283px;
+}
+.body1{
+	height:1000px;
+	width:100%;
+	background-image: url(images/black.jpg) ;
+    background-size: cover;
+    padding: 25px 0 40px;
+	\\text-align: center;
+	margin-top: -5px;
+	color:white;
+	font-size: 33px;
+	display:inline-block;
+}
+.body1 img{
+	opacity:1;
+}
+.logo{
+	width:147px;
+	height:130px;
+	\\border:1px solid black;
+	margin-left: 390px;
+	margin-top: 100px;
+}
+
+.logo button{
+	width:560px;
+	height:118px;
+	color:white;
+	background-color: #CB202D;
+	border:none;
+	border-radius: 4px;
+	font-size: 33px;
+	text-align: center;
+	cursor: pointer;
+}
+.logo button a{
+	color:white;
+	text-decoration: none;
+}
+#title{
+	text-align: center;
+	height:55px;
+	margin-left: 36px;
+	
+}
+
+
+.body1 select{
+	width:226px;
+	height:35px;
+	border-radius: 4px;
+	cursor:pointer;
+	color:black;
+    border:none;
+	margin-left: 330px;
+	
+}
+
+.multiple_authors{
+	width:226px;
+	height:200px;
+	border-radius: 4px;
+	cursor:pointer;
+	color:black;
+    border:none;
+	
+	
+}
+
+
+#indicator{
+	background: #EFF2F6;
+	height:30px
+}
+
+.top-nav{
+	
+	width:1190px;
+	height:60px;
+
+
+}
+.book_topnav{
+	
+	width:1190px;
+	height:60px;
+	
+	margin-left: 50px;
+
+}
+
+
+.add_data{
+	width:100px;
+	height:50px;
+	float:right;
+}
+.add{
+	color: white;
+    background-color: black;
+    width: 160px;
+    height: 45px;
+    margin-left: 30px;
+    border:none;
+}
+
+#add_book{
+	color: white;
+    background: unset;
+    width: 160px;
+    height: 45px;
+    float:right;
+    border:none;
+    font-size: 24px;
+}
+
+#add_author{
+	color: white;
+    background: unset;
+    width: 160px;
+    height: 45px;
+    float:right;
+    border:none;
+    font-size: 24px;
+}
+
+#add_author:hover{
+	background-color:  #CB202D;
+}
+
+
+#book_submit{
+	width:126px;
+	height:40px;
+	border:none;
+	color:white;
+	background:unset;
+	float:right;
+	margin-left:2px;
+}
+#book_submit:hover{
+	background-color: white;
+	color:black;
+}
+
+
+#book_dialog{
+	color: white;
+	background-color: black;
+	border:none;
+
+}
+
+#add_book:hover{
+	background-color:  #CB202D;
+}
+
+#add_account{
+	color: white;
+    background: unset;
+    width: 160px;
+    height: 45px;
+    border:none;
+    font-size: 13px;
+}
+
+#signup_submit{
+	width:126px;
+	height:40px;
+	border:none;
+	color:white;
+	background:unset;
+	float:right;
+	margin-left:2px;
+}
+#signup_submit:hover{
+	background-color: white;
+	color:black;
+}
+
+
+#signup_dialog{
+	color: white;
+	background-color: black;
+	border:none;
+
+}
+
+#add_account:hover{
+	background-color:  #CB202D;
+}
+
+#btnShow{
+	width:100px;
+	height:40px;
+	border:none;
+	color:white;
+	background:unset;
+	float:right;
+	margin-left:2px;
+
+}
+
+#btnShow:hover{
+	background-color: white;
+	color:black;
+}
+
+.add:hover{
+	background-color:  #CB202D;
+
+}
+
+#dialog{
+	color: white;
+	background-color: black;
+	border:none;
+
+}
+.ui-widget-header{
+	color:white;
+	background-color: black;
+}
+.authors{
+	width:240px;
+	height:200px;
+	opacity:1;
+}
+
+.listing{
+font-size: 20px;
+color: white;
+
+
+}
+
+.listing1{
+	font-size: 20px;
+    color: white;
+
+
+}
+.data_list{
+	/*border: 1px solid red;*/
+	width:89%;
+    height:798px;
+    margin-left: 50px;
+}
+
+.main_section{
+    /*border: 1px solid black;*/
+    width: 242px;
+    height: 300px;
+    margin-top: 40px;
+    margin-right: 53px;
+    padding: 0px;
+    float: left;
+}
+
+.photo{
+ /*border:1px solid red;*/
+ width:240px;
+ height:200px;
+}
+
+.data{
+ /*border:1px solid blue;*/
+ width:240px;
+ height:96px;
+ /*background-color: black;*/
+ color:white;
+}
+.step-links{
+	color:white;
+	font-size: 20px;
+	float: right;
+
+}
+.step-links a{
+	color:white;
+	text-decoration: none;
+}
+.pagination{
+	width:727px;
+	height:30px;
+}
+.book_data_list{
+	/*border:1px solid green;*/
+	width:1200px;
+     margin-left: 50px;
+    margin-top: 25px;
+   
+}
+.top_nav{
+	
+	width:1190px;
+	height:60px;
+	/*border:1px solid black;*/
+
+}
+
+.bookdiv {
+    width: 96%;
+    height: 600px;
+    /*border:1px solid green;*/
+    margin-left: 23px;
+    display:flex;
+    
+  
+}
+.singlebook_div {
+    width: 96%;
+    height: 600px;
+    /*border:1px solid green;*/
+    margin-left: 23px;
+    
+    
+  
+}
+.book_details {
+    width:300px;
+    height: 170px;
+   /*border:1px solid green;*/
+  
+}
+.books_images{
+
+width: 330px;
+height: 290px;
+margin-left: 30px;
+display: inline-block;
+
+}
+
+.books_images img{
+	width:300px;
+	height:290px;
+	cursor: pointer;
+}
+
+table{
+	color:white;
+	/*border:1px solid green;*/
+}
+
+.book_table{
+    color: white;
+    display: inline-block;
+    margin-left: 34px;
+    margin-top: 50px;
+
+}
+
+
+
+.book_table  th{
+	font-size: 23px;
+	color:white;;
+	/*border:1px solid green;*/
+}
+
+.book_table  tr{
+	font-size: 23px;
+	color:white;;
+	/*border:1px solid green;*/
+	width:40px;
+}
+
+.book_table td{
+	font-size: 18px;
+	text-align: inherit;
+	color:white;
+	/*border:1px solid green;*/
+	height:10px;
+}
+
+
+.table th{
+	font-size: 23px;
+	color:white;
+	width:300px;
+	height:100px;
+}
+
+.table td{
+	font-size: 18px;
+	text-align: center;
+	color:white;
+	width:300px;
+	height:100px;
+}
+
+.body1 select{
+	margin-left: 0px;
+}
+.decision{
+	margin-left:0px;
+	width:40px;
+	display: inline;
+}
+.approve{
+	color:white;
+	margin-left: 10px;
+	width:100px;
+	height:40px;
+	border-radius: 4px;
+	border:none;
+	background-color: darkgreen;
+	float:right;
+}
+.reject{
+	color:white;
+	float:right;
+	width:100px;
+	height:40px;
+	border-radius: 4px;
+	border:none;
+	background-color: maroon;
+}
+

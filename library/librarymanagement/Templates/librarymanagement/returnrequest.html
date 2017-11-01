@@ -1,0 +1,61 @@
+{% extends "librarymanagement\index.html" %}
+{% block content %}
+	
+<h3 id="title">Return Requests</h3>
+
+<div class="pagination">
+                <span class="step-links">
+                {% if return_list.has_previous %}
+                    <a href="?page={{ return_list.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                      Page {{ return_list.number }} of {{ return_list.paginator.num_pages }}.
+                </span>
+
+                {% if return_list.has_next %}
+                      <a href="?page={{ return_list.next_page_number }}">next</a>
+                {% endif %}
+                </span>
+</div>
+<div class = "book_data_list"> 
+        
+        <table class="table">
+            <tr>  
+                <th>SL.NO</th>
+            	<th>User</th>
+                <th>Date of Request</th> 
+                <th>Book</th>
+                <th>Status</th>
+                <th>Response</th>
+            </tr>
+            {% for return in return_list %}
+
+            <tr>
+                <td>{{forloop.counter}}</td>
+            	<td>{{return.user}}</td>
+                <td>{{return.date}}</td> 
+                {%for book in return.book.all%}
+                    <td>{{book.book_title}}</td>
+                {%endfor%}             
+                <td>{{return.return_status}}</td>
+                <td class="decision">
+                    <form action = "{% url 'approve_return_request' return.id %}" method="post">
+                        {% csrf_token %}
+                        <button  class="approve" type="submit">Received</button>
+                     </form>
+                     <form action = "{% url 'reject_return_request' return.id %}" method="post">
+                        {% csrf_token %}
+                        <button  class="reject" type="submit">Not Received</button>
+                     </form>
+                </td>
+            </tr>
+             {%endfor%}   
+        </table>
+            
+</div>
+
+
+
+{% endblock %}
+	    

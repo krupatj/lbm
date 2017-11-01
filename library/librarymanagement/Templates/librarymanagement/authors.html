@@ -1,0 +1,72 @@
+
+{% extends base_page %}
+
+{% block content %}
+	<h3 id="title">Authors</h3>
+	<div class = data_list> 
+	<div class=top-nav>
+	<div class=add_data>
+            {% if request.user.is_superuser %}
+            <input  class="add" type="button" id="add_author" value="Add Author" />
+            <div id="dialog" style="display: none" align = "left">
+
+                <form action = "{% url 'add_author' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <p>First Name</p>
+                    <input type="text" name="first_name">
+                
+                    <p>Last Name</p>
+                    <input type="text" name="last_name">
+               
+                    <p>Age</p>
+                    <input type="text" name="age">
+                
+                    <p>Country</p>
+                    <input type="text" name="country">
+                    <br><br>
+                    <input   type="file" name="photo" accept="image/*">
+                    <br><br>
+                    <button class="add" id="btnShow">Submit data</button>
+                </form>
+            </div>
+            {% endif %}
+	</div>
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if author_info.has_previous %}
+            <a href="?page={{ author_info.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ author_info.number }} of {{ author_info.paginator.num_pages }}.
+        </span>
+
+        {% if author_info.has_next %}
+            <a href="?page={{ author_info.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+	</div>
+	
+	{% for authors in author_info %}
+    <div class = 'main_section'> 
+        <div class='photo'>
+            {%if authors.photo%}
+            <img  class=authors src="{{ authors.photo.url}}">
+            {%else%}
+            <p>No photo</p>
+            {%endif%}
+            
+        </div>
+        <div class='data'>
+            <p class=listing1>{{authors.first_name}}  {{authors.last_name}}</p>
+            <p class=listing1>Age:{{authors.age}}</p>
+            <p class=listing1>Country:{{authors.country}}</p>
+        </div>
+    </div>
+    {% endfor %}
+    
+</div>
+{% endblock %}
+	    

@@ -1,0 +1,47 @@
+{% extends "librarymanagement\user_index.html" %}
+{% block content %}
+	
+<h3 id="title"> My Return Requests</h3>
+
+<div class="pagination">
+                <span class="step-links">
+                {% if return_list.has_previous %}
+                    <a href="?page={{ return_list.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                      Page {{ return_list.number }} of {{ return_list.paginator.num_pages }}.
+                </span>
+                {% if return_list.has_next %}
+                      <a href="?page={{ return_list.next_page_number }}">next</a>
+                {% endif %}
+                </span>
+</div>
+<div class = "book_data_list"> 
+        
+        <table class="table">
+            <tr>  
+                <th>SL.NO</th>
+
+                <th>Date of Request</th> 
+                <th>Book</th>
+                <th>Status</th>
+            </tr>
+            {% for return in return_list %}
+
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{return.date}}</td> 
+                {%for book in return.book.all%}
+                    <td>{{book.book_title}}</td>
+                {%endfor%}             
+            </tr>
+                <td>{{return.return_status}}</td>
+             {%endfor%}   
+        </table>
+            
+</div>
+
+
+
+{% endblock %}
+	    

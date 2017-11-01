@@ -1,0 +1,4 @@
+*.pyc
+__pycache__ /
+env_libsite/
+mysite/
