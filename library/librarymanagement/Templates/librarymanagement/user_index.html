@@ -18,19 +18,20 @@
 	<div class="container">
 		<header>
 			<div id="header_top">
-				<p><a href="#">Products for business</a></p>
+				<p><a href="#">Welcome {{user}}</a></p>
 			</div>
 			<div id="header_center">
 				<p><a href="{% url 'logoutwindow' %}">Logout</a></p>
 			</div>
 		</header>
 		<div class="body1">
-			<div class = nav_bar>
+			<div class = "nav_bar">
             <ul>
                 <li><a href="{% url 'books_page' %}">Books</a></li>
                 <li><a href="{% url 'authors_page' %}">Authors</a></li>
-                <li><a href="{% url 'user_lend_list' %}">My Lend Request</a></li>
-                <li><a href="{% url 'user_return_list' %}">My Return Request</a></li>
+                <li><a href="{% url 'user_lend_list' %}">Lend Requests</a></li>
+                <li><a href="{% url 'user_borrowed_books_list' %}">Borrowed Books</a></li>
+                <li><a href="{% url 'user_return_list' %}">Return Requests</a></li>
                
             </ul>
             <hr>

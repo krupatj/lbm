@@ -22,7 +22,12 @@ urlpatterns = [
     url(r'^rejectlendrequest/(?P<lend_id>\d+)/$', views.reject_lend_request, name="reject_lend_request"),
     url(r'^approvereturnrequest/(?P<return_id>\d+)/$', views.approve_return_request, name="approve_return_request"),
     url(r'^rejectreturnrequest/(?P<return_id>\d+)/$', views.reject_return_request, name="reject_return_request"),
+    url(r'^userlendbook/(?P<requested_book_id>\d+)$', views.user_lend_book, name="user_lend_book"),
     url(r'^usertlendlist/$', views.user_lend_list, name="user_lend_list"),
+    url(r'^userborrowedbookslist/$', views.user_borrowed_books_list, name="user_borrowed_books_list"),
+    url(r'^userreturnbook/(?P<return_book_id>\d+)$', views.user_return_book, name="user_return_book"),
     url(r'^userreturnlist/$', views.user_return_list, name="user_return_list"),
+    url(r'^userwritereview/(?P<book_id>\d+)$', views.user_write_review, name="user_write_review"),
+    url(r'^usersubmitreview/(?P<book_id>\d+)$', views.user_submit_review, name="user_submit_review"),
 
 ]

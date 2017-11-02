@@ -1,18 +1,18 @@
 {% extends "librarymanagement\user_index.html" %}
 {% block content %}
 	
-<h3 id="title">My Lend Requests</h3>
+<h3 id="title">Borrowed Books</h3>
 <div class="pagination">
                 <span class="step-links">
-                {% if lend_list.has_previous %}
+                {% if book_list.has_previous %}
                     <a href="?page={{ lend_list.previous_page_number }}">previous</a>
                 {% endif %}
 
                 <span class="current">
-                      Page {{ lend_list.number }} of {{ lend_list.paginator.num_pages }}.
+                      Page {{ book_list.number }} of {{ book_list.paginator.num_pages }}.
                 </span>
 
-                {% if lend_list.has_next %}
+                {% if book_list.has_next %}
                       <a href="?page={{ lend_list.next_page_number }}">next</a>
                 {% endif %}
                 </span>
@@ -21,18 +21,18 @@
     <table class="table">
         <tr>  
             <th>SL.NO</th>
-            <th>Date of Request</th> 
+            <th>Requested On</th>
             <th>Book</th>
             <th>Status</th>
         </tr>
-        {% for lend in lend_list %}
+        {% for books in book_list %}
         <tr>
             <td>{{forloop.counter}}</td>
-            <td>{{lend.date}}</td> 
-            {%for book in lend.book.all%}
+            <td>{{books.date}}</td> 
+            {%for book in books.book.all%}
                 <td>{{book}}</td>
             {%endfor%}             
-            <td>{{lend.status}}</td>
+            <td>{{books.status}}</td>
         </tr>
             {%endfor%}   
     </table>

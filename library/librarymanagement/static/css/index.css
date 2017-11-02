@@ -26,7 +26,7 @@ header{
 #header_top a{
 	text-decoration: none;
 	color:dimgray;
-	font-size: 13px;
+	font-size: 20px;
 }
 #header_top a:hover{
 	color: white;
@@ -92,9 +92,10 @@ header{
 
 .nav_bar li {
     float: left;
-    width:334px;
+    width:260px;
     border-top: 2px #CB202D;
 }
+
 .nav_bar a:hover{
 	background-color:  #CB202D;
 }
@@ -107,6 +108,7 @@ header{
     text-decoration: none;
     font-size: 30px;
 }
+
 hr{
 	color:white;
 	width:1283px;
@@ -262,7 +264,19 @@ hr{
 	border:none;
 
 }
-
+#lend_book{
+	width:160px;
+	height:40px;
+	font-size: 18px;
+	border:none;
+	color: white;
+	background: unset;
+	float:right;
+	cursor:pointer;
+}
+#lend_book:hover{
+	background-color: #CB202D;
+}
 #add_book:hover{
 	background-color:  #CB202D;
 }
@@ -519,6 +533,7 @@ table{
 	border:none;
 	background-color: darkgreen;
 	float:right;
+	cursor: pointer;
 }
 .reject{
 	color:white;
@@ -529,4 +544,36 @@ table{
 	border:none;
 	background-color: maroon;
 }
+.review_head {
+   text-align: center;
+   font-size: 25px;
 
+}
+.review_book{
+	height:400px;
+	width:100%;
+}
+.textarea{
+   margin-left: 311px;
+   width: 700;
+   height: 200px;
+}
+
+.review_submit{
+	color:white;
+	margin-left: 10px;
+	width:100px;
+	height:40px;
+	border-radius: 4px;
+	border:none;
+	background-color: darkgreen;
+	cursor: pointer;
+}
+.review_cancel{
+	color:white;
+	width:100px;
+	height:40px;
+	border-radius: 4px;
+	border:none;
+	background-color: maroon;
+}

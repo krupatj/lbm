@@ -1,5 +1,5 @@
 
-{% extends "librarymanagement\index.html" %}
+{% extends base_page %}
 
 {% block content %}
 <h3 id="title">Books</h3>
@@ -78,8 +78,8 @@
                     <td>{{books.stock_count}}</td>
                 </tr>
                 <tr>
-                     <td>REVIEW:   </td>
-                    {%for review in books.reviews.all%}
+                     <td>REVIEW:</td>
+                    {%for review in books.review.all%}
                         <td>{{review.review}}</td>
                     {%endfor%}   
                 </tr>  

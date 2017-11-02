@@ -26,9 +26,7 @@
             $('#book_dialog').dialog('open');
         });
     });
-
-
-
+  
  $(function () {
         $("#signup_dialog").dialog({
             modal: true,

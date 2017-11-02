@@ -26,22 +26,12 @@ CHANGE_STATUS = (
 
 
 class CustomUsers(models.Model):
-    user = models.OneToOneField(User, null=False)
+    user = models.OneToOneField(User)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'")
     phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=True) # validators should be a list
 
     def __str__(self):
         return self.user.username
-
-
-#class User(models.Model):
-#    user_name = models.CharField(max_length=30)
-#    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'")
-#    phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=True) # validators should be a list
-#    email_id = models.EmailField(null=True)
-
-#    def __str__(self):
-#        return self.user_name
 
 class Author(models.Model):
     first_name = models.CharField(max_length=30,)
@@ -52,8 +42,6 @@ class Author(models.Model):
     
     def __str__(self):
         return u'%s %s' % (self.first_name, self.last_name)
-
-
         
 class Book(models.Model):
     book_title = models.CharField(max_length=100)
@@ -65,7 +53,7 @@ class Book(models.Model):
         return self.book_title
 
 class Review(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(CustomUsers, null=False, related_name="review")
     book = models.ForeignKey(Book, null=True, related_name="reviews")
     book_title = models.CharField(max_length=30,blank=True)
     review = models.TextField(max_length=300)
