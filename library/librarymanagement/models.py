@@ -61,7 +61,6 @@ class Review(models.Model):
     def __str__(self):
         return self.book_title
 
-
 class Photo(models.Model):
     photo = models.ImageField(upload_to='books', null=True,blank=True)
     book = models.ForeignKey(Book, null=True, related_name="photos")
