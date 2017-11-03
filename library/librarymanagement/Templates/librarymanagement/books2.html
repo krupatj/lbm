@@ -28,6 +28,7 @@
                     <br><br>
                     <input  type="file" name="photo" accept="image/*">
 
+
                     <button id="book_submit">Submit data</button>
                 </form>
             </div>
@@ -66,6 +67,7 @@
                 <tr>
                     <td>TITLE: </td>
                     <td>{{books.book_title}}</td>
+                    
                 </tr>
                 <tr>
                     <td>AUTHOR:    </td>
@@ -79,7 +81,7 @@
                 </tr>
                 <tr>
                      <td>REVIEW:</td>
-                    {%for review in books.review.all%}
+                    {%for review in books.reviews.all%}
                         <td>{{review.review}}</td>
                     {%endfor%}   
                 </tr>  
