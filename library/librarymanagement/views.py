@@ -47,15 +47,43 @@ def login_window(request):
     if user is not None:
         login(request, user)
         if user.is_superuser:
+            id_list = CustomUsers.objects.values('user_id')
+            print("___________")
+            print ("Value of userid in CustomUsers")
+            reg_id = [values['user_id'] for values in id_list]
+            
+            print (reg_id)
+            flag = 'false' 
+            for search_id in reg_id:
+                print ("id of logged user is ",request.user.id, "search id is ",search_id)
+                if search_id == request.user.id:
+                    flag = 'true'
+            if flag == 'false':
+                new_user = CustomUsers(user_id=request.user.id)
+                new_user.save()
+                print("New User Added to CustomUsers!!")
+            else:
+                print("User already exists!!")
+
             return HttpResponseRedirect('/index/')
         else:
-            #id_list = CustomUsers.objects.all().user_id
-            #print (id_list)
-            #print (request.user.id)
-            #for id in id_list:
-                #if id != request.user.id:
-                    #new_user = CustomUsers(user_id=request.user.id)
-                    #new_user.save()
+            id_list = CustomUsers.objects.values('user_id')
+            print("___________")
+            print ("Value of userid in CustomUsers")
+            reg_id = [values['user_id'] for values in id_list]
+            
+            print (reg_id)
+            flag = 'false' 
+            for search_id in reg_id:
+                print ("id of logged user is ",request.user.id, "search id is ",search_id)
+                if search_id == request.user.id:
+                    flag = 'true'
+            if flag == 'false':
+                new_user = CustomUsers(user_id=request.user.id)
+                new_user.save()
+                print("New User Added to CustomUsers!!")
+            else:
+                print("User already exists!!")
             return HttpResponseRedirect('/user_index/')
     return HttpResponseRedirect('/signup/')
 
@@ -80,9 +108,6 @@ def index(request):
 def user_index(request):
     if request.user.is_authenticated:
         user = request.user.first_name
-        #print (request.user.id)
-        #new_user = CustomUsers(user_id=request.user.id)
-        #new_user.save()
         return render(request, 'librarymanagement/user_index.html',{'user':user})
     else:
         return HttpResponseRedirect('/signup/')
@@ -126,7 +151,6 @@ def book_details(request,books_id):
        authors_list = Author.objects.order_by("first_name")
        return render(request, 'librarymanagement/book_details.html', {'book':book,'authors_list':authors_list,"base_page": base_page})
     else:
-       
         print ("%s attempted to access book_detail page " %(request.user))
         return HttpResponseRedirect('/signup/')
 
@@ -141,7 +165,6 @@ def add_book(request):
             form = AddBookForm(request.POST,request.FILES)
             book_image = request.FILES.get('photo')
             if form.is_valid():
-                
                 print ("success!")
                 validated_form = form.save()
                 print ('----------', validated_form.pk)
