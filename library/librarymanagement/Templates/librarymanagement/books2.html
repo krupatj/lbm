@@ -1,5 +1,5 @@
 
-{% extends "librarymanagement\index.html" %}
+{% extends base_page %}
 
 {% block content %}
 <h3 id="title">Books</h3>
@@ -27,6 +27,7 @@
                     <input type="text" name="stock_count">
                     <br><br>
                     <input  type="file" name="photo" accept="image/*">
+
 
                     <button id="book_submit">Submit data</button>
                 </form>
@@ -66,6 +67,7 @@
                 <tr>
                     <td>TITLE: </td>
                     <td>{{books.book_title}}</td>
+                    
                 </tr>
                 <tr>
                     <td>AUTHOR:    </td>
@@ -78,7 +80,7 @@
                     <td>{{books.stock_count}}</td>
                 </tr>
                 <tr>
-                     <td>REVIEW:   </td>
+                     <td>REVIEW:</td>
                     {%for review in books.reviews.all%}
                         <td>{{review.review}}</td>
                     {%endfor%}   

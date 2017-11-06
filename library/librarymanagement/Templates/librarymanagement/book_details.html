@@ -1,12 +1,18 @@
-{% extends "librarymanagement\index.html" %}
+{% extends base_page %}
 
 {% block content %}
 <div class = "book_data_list"> 
          
         <div class="singlebook_div">
+            <form action = "{% url "user_lend_book" book.id %}" method="post">
+                {% csrf_token %}
+                <button id="lend_book">LEND THIS BOOK</button>
+            </form>
             {%for image in book.photos.all%}
                 <div class="books_images">
+
                     <img  id ="book" src="{{image.photo.url}}"/>
+
                 </div>
             {%endfor%}
             <table class="book_table">

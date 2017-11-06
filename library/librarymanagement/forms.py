@@ -3,7 +3,6 @@ from .models import Author,Book,Photo
 from django.forms.models import model_to_dict, fields_for_model
 
 class AddAuthorForm(forms.ModelForm):
-    id = forms.CharField(label='Lend Id', max_length=100)
     class Meta:
         model = Author
         fields = ('first_name', 'last_name','age', 'country', 'photo')

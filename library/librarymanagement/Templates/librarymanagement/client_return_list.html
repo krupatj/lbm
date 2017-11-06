@@ -21,7 +21,6 @@
         <table class="table">
             <tr>  
                 <th>SL.NO</th>
-
                 <th>Date of Request</th> 
                 <th>Book</th>
                 <th>Status</th>
@@ -34,14 +33,20 @@
                 {%for book in return.book.all%}
                     <td>{{book.book_title}}</td>
                 {%endfor%}             
-            </tr>
                 <td>{{return.return_status}}</td>
-             {%endfor%}   
-        </table>
-            
+                
+                {% if return.return_status == 'Received' %}
+                        {%for book in return.book.all%}
+                            <form action = "{% url 'user_write_review' book.id %}" method="post">
+                                {% csrf_token %}
+                                <td><button class="reject" type="submit">Write a Review</button></td>
+                           </form>
+                        {% endfor %}
+                {% endif %}
+            </tr>
+
+            {%endfor%}   
+        </table>     
 </div>
-
-
-
 {% endblock %}
-	    
+

@@ -35,12 +35,7 @@ class Migration(migrations.Migration):
             model_name='customusers',
             name='user',
         ),
-        migrations.AddField(
-            model_name='customusers',
-            name='user_ptr',
-            field=models.OneToOneField(auto_created=True, default='krupa', on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL),
-            preserve_default=False,
-        ),
+
         migrations.AlterField(
             model_name='lendrequest',
             name='date',
@@ -56,7 +51,5 @@ class Migration(migrations.Migration):
             name='user',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
-        migrations.DeleteModel(
-            name='User',
-        ),
+
     ]
