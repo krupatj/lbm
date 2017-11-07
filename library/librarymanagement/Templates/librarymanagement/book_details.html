@@ -1,5 +1,6 @@
-{% extends base_page %}
 
+{% extends base_page %}
+{% block title %} Book Details <{% endblock %}
 {% block content %}
 <div class = "book_data_list"> 
          
@@ -38,7 +39,7 @@
             <tr>
                 <td>REVIEW:</td>
                     {%for review in book.reviews.all%}
-                        <td>{{review.review}}</td>
+                        <td class ="review">{{review.review}}</td>
                     {%endfor%}   
             </tr>  
             </table>    

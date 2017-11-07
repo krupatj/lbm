@@ -7,6 +7,15 @@ body {
 	padding:0;
 	
 }
+.error_message{
+	width: 400px;
+    margin-left: 533px;
+}
+.info_message{
+	width: 400px;
+    margin-left: 533px;
+    font-size: 15px;
+}
 header{
 	height:70px;
 	width:100%;
@@ -61,6 +70,7 @@ header{
 	
 	color:black;
 	margin-left:890px;
+	cursor: pointer;
 }
 
 #login_dialog{
@@ -73,6 +83,7 @@ header{
 	
 	color:white;
 	margin-left:700px;
+	cursor:pointer;
 }
 #header_center a:hover{
 	background-color:#CB202D;
@@ -216,6 +227,7 @@ hr{
     height: 45px;
     margin-left: 30px;
     border:none;
+    cursor: pointer;
 }
 
 #add_book{
@@ -500,7 +512,10 @@ table{
 	height:10px;
 	height:30px;
 }
-
+.review{
+	width:200px;
+	display: inherit;
+}
 
 .table th{
 	font-size: 23px;
@@ -557,8 +572,6 @@ table{
 }
 .textarea{
    margin-left: 311px;
-   width: 700;
-   height: 200px;
 }
 
 .review_submit{
@@ -570,6 +583,7 @@ table{
 	border:none;
 	background-color: darkgreen;
 	cursor: pointer;
+	margin-left: 823px;
 }
 .review_cancel{
 	color:white;
@@ -577,5 +591,6 @@ table{
 	height:40px;
 	border-radius: 4px;
 	border:none;
+	cursor: pointer;
 	background-color: maroon;
 }

@@ -1,5 +1,6 @@
 
 {% extends base_page %}
+{% block title %}Books<{% endblock %}
 
 {% block content %}
 <h3 id="title">Books</h3>
@@ -59,8 +60,10 @@
                 {%for image in books.photos.all%}
                 {% if forloop.first %}
                     <div class="books_images">
-                        <img  class ="book" src="{{image.photo.url}}" onclick="window.location.href= {% url 'book_details' books.id %}" />
+                         <!-- <img  class ="book" src="{{image.photo.url}}" onclick="window.location.href= {% url 'book_details' books.id %}" />    -->
+                        <a href="{% url 'book_details' books.id %}"> <img  class ="book" src="{{image.photo.url}}" /></a>  
                     </div>
+                    
                 {% endif %}
                 {%endfor%}
                 <table class="book_table">
@@ -82,7 +85,7 @@
                 <tr>
                      <td>REVIEW:</td>
                     {%for review in books.reviews.all%}
-                        <td>{{review.review}}</td>
+                        <td class="review">{{review.review}}</td>
                     {%endfor%}   
                 </tr>  
                 </table>    

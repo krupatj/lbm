@@ -1,6 +1,6 @@
 
 {% extends base_page %}
-
+{% block title %}Authors<{% endblock %}
 {% block content %}
 	<h3 id="title">Authors</h3>
 	<div class = data_list> 
@@ -14,7 +14,6 @@
                     {% csrf_token %}
                     <p>First Name</p>
                     <input type="text" name="first_name">
-                
                     <p>Last Name</p>
                     <input type="text" name="last_name">
                
@@ -46,8 +45,13 @@
             <a href="?page={{ author_info.next_page_number }}">next</a>
         {% endif %}
     </span>
-</div>
-	</div>
+    </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class=" {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
 	
 	{% for authors in author_info %}
     <div class = 'main_section'> 

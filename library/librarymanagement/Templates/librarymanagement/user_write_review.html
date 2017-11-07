@@ -1,12 +1,13 @@
 {% extends "librarymanagement\user_index.html" %}
+{% block title %}Write Review<{% endblock %}
 {% block content %}
-
 <div class="review_book">
     <form action =  "{% url 'user_submit_review' book_id %}" method="post">
         {% csrf_token %}
 
         <p class="review_head">Please type your review here</p>
-        <input  class="textarea" type="textarea" name="review_content">
+        <textarea class="textarea" rows="13" cols="100" type="textarea" name="review_content"></textarea>
+        <br>
         <button type="submit" class="review_submit">Submit</button>
         <button type="reset" class="review_cancel">Cancel</button>
 

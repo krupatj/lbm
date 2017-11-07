@@ -1,19 +1,16 @@
+import datetime
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
-from django.shortcuts import render,render_to_response
-from django.http import HttpResponse
-from librarymanagement.models import Book,Author,LendRequest,ReturnRequest,DECISION_CHOICES,CHANGE_STATUS,Photo,CustomUsers,Review
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import AddAuthorForm,AddBookForm
-from django.contrib.auth import logout
-from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
-from django.core import serializers
+from django.shortcuts import render
+from librarymanagement.models import Book, Author, LendRequest, ReturnRequest, DECISION_CHOICES, CHANGE_STATUS, Photo, CustomUsers, Review
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
-from django import template
-import datetime
+from django.contrib.auth.forms import UserCreationForm
+from .forms import AddAuthorForm,AddBookForm
 
 
 def basepage(request):
@@ -23,6 +20,14 @@ def basepage(request):
     Returns:Renders the base_page 
     """
     return render(request, 'librarymanagement/base_page.html')
+
+def admin_basepage(request):
+    """
+    Purpose:renders the admin base page which contains the signup and login options
+    Input:None
+    Returns:Renders the admin_base_page 
+    """
+    return render(request, 'librarymanagement/admin_base_page.html')
 
 
 def signup(request):
@@ -34,15 +39,36 @@ def signup(request):
     print ("%s at the signup page " %(request.user))
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
-        print (request.POST)
+        print(request.POST)
         if form.is_valid():
-            print(request.user)
             form.save()
-            print(request.user.id)
+            messages.error(request, 'new account Created')
             return HttpResponseRedirect('/signup/')
     else:
         form = UserCreationForm()
-    return render(request, 'librarymanagement/base_page.html', {'form': form})
+        return render(request, 'librarymanagement/base_page.html', {'form': form})
+
+
+def admin_signup(request):
+    """
+    purpose: Creates a new account for the user who wants to signed up as admin
+    Input:None
+    Returns:goes back to signup page after account creation
+    """
+    print("%s at the admin signup page " %(request.user))
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            print("admin account created")
+            print(UserCreationForm)
+            form.is_superuser = 'true'
+            form.save()
+            messages.error(request, 'new  admin account Created')
+            return HttpResponseRedirect('/adminsignup/')
+    else:
+        form = UserCreationForm()
+        return render(request, 'librarymanagement/admin_base_page.html', {'form': form})
 
 def login_window(request):
     """
@@ -53,8 +79,8 @@ def login_window(request):
     username = request.POST.get('username','')
     password = request.POST.get('password','')
     user = authenticate(username=username, password=password)
-    print ('user', user)
-    
+    print('user', user)
+
     if user is not None:
         login(request, user)
         """
@@ -63,12 +89,12 @@ def login_window(request):
         """
         id_list = CustomUsers.objects.values('user_id')
         print("___________")
-        print ("Value of userid in CustomUsers")
+        print("Value of userid in CustomUsers")
         reg_id = [values['user_id'] for values in id_list]
         print (reg_id)
-        flag = 'false' 
+        flag = 'false'
         for search_id in reg_id:
-            print ("id of logged user is ",request.user.id, "search id is ",search_id)
+            print("id of logged user is ",request.user.id, "search id is ",search_id)
             if search_id == request.user.id:
                 flag = 'true'
         if flag == 'false':
@@ -83,6 +109,7 @@ def login_window(request):
         else:
             return HttpResponseRedirect('/user_index/')
     else:
+        messages.error(request, 'Invalid Credentials')
         return HttpResponseRedirect('/signup/')
 
 @login_required
@@ -92,9 +119,10 @@ def logout_window(request):
        Returns:user is redirected to the signup page
     """
     print('At the logout view')
-    print ("%s logging out" %(request.user))
+    print("%s logging out" %(request.user))
     logout(request)
     print('Logout success!')
+    messages.info(request, 'Successfully logged out')
     return HttpResponseRedirect('/signup/')
 
 
@@ -108,7 +136,7 @@ def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/signup/')
     user = request.user.first_name
-    return render(request, 'librarymanagement/index.html',{'user':user})
+    return render(request, 'librarymanagement/index.html', {'user':user})
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def user_index(request):
@@ -121,8 +149,8 @@ def user_index(request):
         return HttpResponseRedirect('/signup/')
 
     user = request.user.first_name
-    return render(request, 'librarymanagement/user_index.html',{'user':user})
-       
+    return render(request, 'librarymanagement/user_index.html', {'user':user})
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def books(request):
     """Purpose: Displays a list of books with relevant details
@@ -130,10 +158,10 @@ def books(request):
        Returns:redirected to the page displyaing  list of books  
     """
     if  not request.user.is_authenticated:
-        print ("%s attempted to access books " %(request.user))
+        print("%s attempted to access books " %(request.user))
         return HttpResponseRedirect('/signup/')
 
-    print ("%s in books page " %(request.user))
+    print("%s in books page " %(request.user))
     books_list = Book.objects.order_by("book_title")
     authors_list = Author.objects.all()
     paginator = Paginator(books_list, 2)
@@ -151,7 +179,7 @@ def books(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         books = paginator.page(paginator.num_pages)
     return render(request, 'librarymanagement/books2.html',
-        {'books_info':books,'authors_list':authors_list,"base_page": base_page})
+        {'books_info':books, 'authors_list':authors_list, "base_page": base_page})
         
 
 
@@ -162,18 +190,18 @@ def book_details(request,books_id):
        Returns:Renders the book_detail page 
     """
     if not  request.user.is_authenticated:
-        print ("%s attempted to access book_detail page " %(request.user))
+        print("%s attempted to access book_detail page " %(request.user))
         return HttpResponseRedirect('/signup/')
 
-    print ("%s in book_detail page " %(request.user))
-    print (books_id)
+    print("%s in book_detail page " %(request.user))
+    print(books_id)
     base_page = "librarymanagement/user_index.html"
     if request.user.is_superuser:
         base_page = "librarymanagement/index.html"
     book = Book.objects.get(pk=books_id)
     authors_list = Author.objects.order_by("first_name")
     return render(request, 'librarymanagement/book_details.html', 
-                 {'book':book,'authors_list':authors_list,"base_page": base_page})
+                 {'book':book, 'authors_list':authors_list, "base_page": base_page})
         
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -183,22 +211,22 @@ def add_book(request):
        Returns:Renders the books page 
     """
     if  not request.user.is_authenticated:
-        print ("%s attempted to access book_add page " %(request.user))
+        print("%s attempted to access book_add page " %(request.user))
         return HttpResponseRedirect('/signup/')
-    print ("%s in add_book page " %(request.user))
+    print("%s in add_book page " %(request.user))
     if request.method == 'POST':
         print(request.POST)
         form = AddBookForm(request.POST,request.FILES)
         book_image = request.FILES.get('photo')
         if form.is_valid():
-            print ("success!")
+            print("success!")
             validated_form = form.save()
             print ('----------', validated_form.pk)
             photo = Photo(photo=book_image, book_title=validated_form.book_title, book_id=validated_form.pk)
             photo.save()
             return HttpResponseRedirect('/books/')
         else:
-            print (form.errors)
+            print(form.errors)
             return render(request,'librarymanagement/books2.html')
     else:
         return render(request, 'librarymanagement/books2.html')
@@ -211,7 +239,7 @@ def user_lend_book(request,requested_book_id):
        Returns:Redirects to the books page
     """
     if  not request.user.is_authenticated:
-        print ("%s attempted to access user_lend_book page " %(request.user))
+        print("%s attempted to access user_lend_book page " %(request.user))
         return HttpResponseRedirect('/signup/')
 
     book_requested = requested_book_id
@@ -219,7 +247,7 @@ def user_lend_book(request,requested_book_id):
     user_id_base =  request.user.id
     final_user_id = CustomUsers.objects.get(user_id=user_id_base).pk
     print("----------------------")
-    print ("id from custom users", id)
+    print("id from custom users", id)
     print("----------------------")
     lend_request = LendRequest(user_id=final_user_id,date=datetime.datetime.now(),status='Pending',final_decision='On Hold')
     lend_request.save()
@@ -234,7 +262,7 @@ def authors(request):
     Returns:Redirects the authors page displaying list of authors
     """
     if request.user.is_authenticated:
-        print ("%s in authors page " %(request.user))
+        print("%s in authors page " %(request.user))
         authors_list = Author.objects.order_by("first_name")
         paginator = Paginator(authors_list, 8)
         page = request.GET.get('page')
@@ -249,7 +277,7 @@ def authors(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             authors = paginator.page(paginator.num_pages)
-        return render(request, 'librarymanagement/authors.html',{'author_info':authors, "base_page": base_page})
+        return render(request, 'librarymanagement/authors.html', {'author_info':authors, "base_page": base_page})
     else:
         print ("%s attempted to access authors page " %(request.user))
         return HttpResponseRedirect('/signup/')
@@ -265,23 +293,20 @@ def add_author(request):
         print ("%s attempted to access add_author page " %(request.user))
         return HttpResponseRedirect('/signup/')
     print ("%s in add author page " %(request.user))
-    if request.method == 'POST':
-        print("post success")
-        form = AddAuthorForm(request.POST, request.FILES)
-        if form.is_valid():
-            print("form valid")
-            form.save()
-            print("author added")
-            return HttpResponseRedirect('/authors/')
-        else:
-            errors = form.errors
-            print (errors)
-            return render(request, 'librarymanagement/error_page.html',{'errors':errors} )
-    else:
+    if  not request.method == 'POST':
         return render(request, 'librarymanagement/authors.html')
-        
-
-
+    print("post success")
+    form = AddAuthorForm(request.POST, request.FILES)
+    if not  form.is_valid():
+        errors = form.errors
+        print(errors)
+        return render(request, 'librarymanagement/error_page.html', {'errors':errors} )
+    print("form valid")
+    form.save()
+    print("author added")
+    messages.info(request, 'author Successfully added!!! ')
+    return HttpResponseRedirect('/authors/')    
+       
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def approve_request(request):
     """Purpose: Enables the admin to approve a lend request made by a user
@@ -294,14 +319,14 @@ def approve_request(request):
     if request.method == 'POST':
         print (request.user)
         form = AddBookForm(request.POST,request.FILES)
-        print (request.POST)
+        print(request.POST)
         if form.is_valid():
-            print ("success!")
+            print("success!")
             form.save()
-            return render(request,'librarymanagement/add_book.html',{'form': form})
+            return render(request, 'librarymanagement/add_book.html', {'form': form})
         else:
-            print (form.errors)
-            return render(request,'librarymanagement/books2.html')
+            print(form.errors)
+            return render(request, 'librarymanagement/books2.html')
 
 
 
@@ -312,11 +337,11 @@ def lend_request(request):
        Returns:Redirects the lend request page
     """
     if  not request.user.is_superuser:
-        print ("%s attempted to access lend_request page " %(request.user))
+        print("%s attempted to access lend_request page " %(request.user))
         return HttpResponseRedirect('/signup/')
 
-    print (User.objects.get(pk=1).first_name)
-    print ("%s in lend_request page " %(request.user))
+    print(User.objects.get(pk=1).first_name)
+    print("%s in lend_request page " %(request.user))
     decision = DECISION_CHOICES
     lend_list = LendRequest.objects.order_by("user")
 
@@ -330,7 +355,7 @@ def lend_request(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         lends = paginator.page(paginator.num_pages)
-    return render(request, 'librarymanagement/lendrequest.html',{'lend_list':lends, 'decision':decision})
+    return render(request, 'librarymanagement/lendrequest.html', {'lend_list':lends, 'decision':decision})
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def user_lend_list(request):
@@ -340,14 +365,14 @@ def user_lend_list(request):
     """
     if request.user.is_authenticated:
         print("_"*30)
-        print ("%s in client_lend_list page " %(request.user))
+        print("%s in client_lend_list page " %(request.user))
         print("_"*30)
         user_id_base =  request.user.id
         print("_"*30)
-        print ("The actual user Id from auth.users",user_id_base)
+        print("The actual user Id from auth.users",user_id_base)
         id = CustomUsers.objects.get(user_id=user_id_base).pk
         print("_"*30)
-        print ("id from custom users", id)
+        print("id from custom users", id)
         print("_"*30)
         lend_list = LendRequest.objects.filter(user_id=id)
         paginator = Paginator(lend_list, 4)
@@ -361,9 +386,9 @@ def user_lend_list(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             lends = paginator.page(paginator.num_pages)
             
-        return render(request, 'librarymanagement/client_lend_list.html',{'lend_list':lends})
+        return render(request, 'librarymanagement/client_lend_list.html', {'lend_list':lends})
     else:
-        print ("%s attempted to access client_lend_list page " %(request.user))
+        print("%s attempted to access client_lend_list page " %(request.user))
         return HttpResponseRedirect('/signup/')
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -373,14 +398,14 @@ def user_borrowed_books_list(request):
        Returns:Redirects the borrowed book list page
     """
     if  not request.user.is_authenticated:
-        print ("%s attempted to access borrowed_book_list page " %(request.user))
+        print("%s attempted to access borrowed_book_list page " %(request.user))
         return HttpResponseRedirect('/signup/')
     user_id_base =  request.user.id
-    id = CustomUsers.objects.get(user_id=user_id_base).pk
+    user_id = CustomUsers.objects.get(user_id=user_id_base).pk
     print("_"*60)
-    print ("id from custom users", id)
+    print("id from custom users", user_id)
     print("_"*60)
-    borrowed_book_list = LendRequest.objects.filter(user_id=id,final_decision='Approved')
+    borrowed_book_list = LendRequest.objects.filter(user_id=user_id,final_decision='Approved')
     paginator = Paginator(borrowed_book_list, 2)
     page = request.GET.get('page')
     try:
@@ -391,10 +416,10 @@ def user_borrowed_books_list(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         book_list = paginator.page(paginator.num_pages)
-    return render(request, 'librarymanagement/user_borrowed_books.html',{'book_list':book_list})
+    return render(request, 'librarymanagement/user_borrowed_books.html', {'book_list':book_list})
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def user_return_book(request,return_book_id):
+def user_return_book(request, return_book_id):
     """Purpose: Enables the user to make a return request
        Input:return_book_id
        Returns:Redirects the borrowed book list page
@@ -402,18 +427,19 @@ def user_return_book(request,return_book_id):
     if  not request.user.is_authenticated:
         print ("%s attempted to access user_return_book page " %(request.user))
         return HttpResponseRedirect('/signup/')
+
     book_to_return = return_book_id
     print("book selected to return is ",book_to_return)
-    user_id_base =  request.user.id
+    user_id_base = request.user.id
     print("_"*20)
-    print ("The actual user Id from auth.users",user_id_base)
+    print("The actual user Id from auth.users",user_id_base)
     final_user_id = CustomUsers.objects.get(user_id=user_id_base).pk
     return_request = ReturnRequest(user_id=final_user_id,date=datetime.datetime.now(),
                      return_status='Not Received',change_status='Not Received')
     return_request.save()
     return_request.book.add(book_to_return)
     return HttpResponseRedirect('/userborrowedbookslist/')
-        
+    
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def approve_lend_request(request, lend_id):
     """Purpose: Admin can approve a lend request made by a user
@@ -421,22 +447,22 @@ def approve_lend_request(request, lend_id):
         Returns:Redirects the lend_request view
     """
     if  not request.user.is_superuser:
-        print ("%s attempted to access approve_lend_request page " %(request.user))
+        print("%s attempted to access approve_lend_request page " %(request.user))
         return HttpResponseRedirect('/signup/')
-    if request.method == 'POST': 
-        print (request.user)
+    if request.method == 'POST':
+        print(request.user)
         lender = LendRequest.objects.get(pk=lend_id)
         for book in lender.book.all():
-            print (book.book_title)
+            print(book.book_title)
             print(book.stock_count)
             if book.stock_count == 0:
                 print(" Empty Stock ")
-                print (lender.book)
+                print(lender.book)
                 lender.final_decision = 'Rejected'
                 book.save()
             else:
                 print("Request_approved")
-                print (lender.book)
+                print(lender.book)
                 lender.final_decision = 'Approved'
                 book.stock_count = book.stock_count - 1
                 print(book.stock_count)
@@ -445,34 +471,32 @@ def approve_lend_request(request, lend_id):
         if lender.status != lender.final_decision:
             lender.status = lender.final_decision
         lender.save()
-        print ("status changed to %s " %(lender.final_decision))
+        print("status changed to %s " %(lender.final_decision))
         return HttpResponseRedirect('/lendrequest/')
-       
-
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def reject_lend_request(request, lend_id):
-        """Purpose:Admin can reject a lend request made by a user
-           Input:lend_id of the lend request
+    """Purpose:Admin can reject a lend request made by a user
+        Input:lend_id of the lend request
         Returns:Redirects the lendrequest view
-        """
-        if  not request.user.is_superuser:
-            print ("%s attempted to access reject_lend_request_request page " %(request.user))
-            return HttpResponseRedirect('/signup/')
+    """
+    if  not request.user.is_superuser:
+        print("%s attempted to access reject_lend_request_request page " %(request.user))
+        return HttpResponseRedirect('/signup/')
 
-        if request.method == 'POST':
-            print (request.user)
-            print("request_rejected")
-            lender = LendRequest.objects.get(pk=lend_id)
-            lender.final_decision = 'Rejected'
-            # Changes the value to status if it is not equal to final decision value
-            if lender.status != lender.final_decision:
-               lender.status = lender.final_decision
-            lender.save()
-            print ("status changed to %s " %(lender.final_decision))
-            return HttpResponseRedirect('/lendrequest/')
-        else:
-            return HttpResponseRedirect('/signup/')
+    if request.method == 'POST':
+        print(request.user)
+        print("request_rejected")
+        lender = LendRequest.objects.get(pk=lend_id)
+        lender.final_decision = 'Rejected'
+        # Changes the value to status if it is not equal to final decision value
+        if lender.status != lender.final_decision:
+            lender.status = lender.final_decision
+        lender.save()
+        print("status changed to %s " %(lender.final_decision))
+        return HttpResponseRedirect('/lendrequest/')
+    else:
+        return HttpResponseRedirect('/signup/')
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def return_request(request):
@@ -480,13 +504,13 @@ def return_request(request):
        Input :none
        return:returnrequest.html page is rendered
     """
-    if  not request.user.is_superuser:
-        print ("%s attempted to access return_request page " %(request.user))
+    if not request.user.is_superuser:
+        print("%s attempted to access return_request page " %(request.user))
         return HttpResponseRedirect('/signup/')
 
-    print ("%s in return_request page " %(request.user))
+    print("%s in return_request page " %(request.user))
     decision = CHANGE_STATUS
-    print (request.user)
+    print(request.user)
     return_list = ReturnRequest.objects.order_by("user")
     #pagination code to display 4 entried per page
     paginator = Paginator(return_list, 4)
@@ -499,7 +523,8 @@ def return_request(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         returns = paginator.page(paginator.num_pages)
-    return render(request, 'librarymanagement/returnrequest.html',{'return_list':returns,'decision':decision})
+    return render(request, 'librarymanagement/returnrequest.html', 
+        {'return_list':returns,'decision':decision})
 
         
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -509,7 +534,7 @@ def user_return_list(request):
        return:client_return_list.html page is rendered
     """
     if  not request.user.is_authenticated:
-        print ("%s attempted to access user_return_list page " %(request.user))
+        print("%s attempted to access user_return_list page " %(request.user))
         return HttpResponseRedirect('/signup/')
     user_id_base =  request.user.id
     id = CustomUsers.objects.get(user_id=user_id_base).pk
@@ -525,44 +550,45 @@ def user_return_list(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         returns = paginator.page(paginator.num_pages)
-    return render(request, 'librarymanagement/client_return_list.html',{'return_list':returns})
-        
+    return render(request, 'librarymanagement/client_return_list.html', {'return_list':returns})
+
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def user_write_review(request,book_id):
+def user_write_review(request, book_id):
     """Purpose:Redirects to a new page to write a review about a book
        Input :book_id
        return:user_write_review.html page is rendered
     """
     if  not request.user.is_authenticated:
-        print ("%s attempted to access user_write_review page " %(request.user))
+        print("%s attempted to access user_write_review page " %(request.user))
         return HttpResponseRedirect('/signup/')
-    print (book_id)
-    return render(request, 'librarymanagement/user_write_review.html',{'book_id':book_id})
+    print(book_id)
+    return render(request, 'librarymanagement/user_write_review.html', {'book_id':book_id})
 
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)        
-def user_submit_review(request,book_id):
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def user_submit_review(request, book_id):
     """Purpose:User writes a revoew about a book if the return request is approved by the admin
        Input:book_id of thebook for which the review is made
        Return:rediretced to return userreturnlsit view
     """
     if not request.user.is_authenticated:
-         print ("%s attempted to access user_submit_review page " %(request.user))
-         return HttpResponseRedirect('/signup/')
+        print("%s attempted to access user_submit_review page " %(request.user))
+        return HttpResponseRedirect('/signup/')
     print("book id is ")
-    print (book_id)
-    print ("%s in user_submit_review page " %(request.user))
-    user_id_base =  request.user.id
-    print ("The actual user Id from auth.users",user_id_base)
+    print(book_id)
+    print("%s in user_submit_review page " %(request.user))
+    user_id_base = request.user.id
+    print("The actual user Id from auth.users", user_id_base)
     final_user_id = CustomUsers.objects.get(user_id=user_id_base).pk
-    print ("id from custom users", final_user_id)
-    review_content = request.POST.get('review_content','')
+    print("id from custom users", final_user_id)
+    review_content = request.POST.get('review_content', '')
     print(review_content)
     book_title = Book.objects.get(id=book_id)
-    review = Review (user_id=final_user_id,book_id=book_id,book_title=book_title,review=review_content)
+    review = Review(user_id=final_user_id, book_id=book_id, book_title=book_title,
+                    review=review_content)
     review.save()
-    print (book_title)
+    print(book_title)
     return HttpResponseRedirect('/userreturnlist/')
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -574,12 +600,12 @@ def approve_return_request(request, return_id):
     if  not request.user.is_superuser:
         return HttpResponseRedirect('/signup/')
     if request.method == 'POST':
-        print ("%s in approve_lend page " %(request.user))
+        print("%s in approve_lend page " %(request.user))
         print("request_approved")
         lender = ReturnRequest.objects.get(pk=return_id)
         lender.change_status = 'Received'
         for book in lender.book.all():
-            print (book.book_title)
+            print(book.book_title)
             print(book.stock_count)
             book.stock_count = book.stock_count + 1
             print(book.stock_count)
@@ -587,11 +613,11 @@ def approve_return_request(request, return_id):
         if lender.return_status != lender.change_status:
             lender.return_status = lender.change_status
         lender.save()
-        print ("status changed to %s " %(lender.change_status))
+        print("status changed to %s " %(lender.change_status))
         return HttpResponseRedirect('/returnrequest/')
     else:
         return HttpResponseRedirect('/signup/')
- 
+
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def reject_return_request(request, return_id):
@@ -602,14 +628,14 @@ def reject_return_request(request, return_id):
     if  not request.user.is_superuser:
         return HttpResponseRedirect('/signup/')
     if request.method == 'POST':
-        print ("%s in reject_return_request page " %(request.user))
+        print("%s in reject_return_request page " %(request.user))
         print("request_rejected")
         lender = ReturnRequest.objects.get(pk=return_id)
         lender.change_status = ' Not Received'
         if lender.return_status != lender.change_status:
             lender.return_status = lender.change_status
         lender.save()
-        print ("status changed to %s " %(lender.change_status))
+        print("status changed to %s " %(lender.change_status))
         return HttpResponseRedirect('/returnrequest/')
     
            

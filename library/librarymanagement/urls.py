@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     url(r'^basepage/$', views.basepage, name="base_page"),
+     url(r'^adminbasepage/$', views.admin_basepage, name="admin_base_page"),
+    url(r'^adminsignup/$', views.admin_signup, name="admin_sign_up_page"),
     url(r'^signup/$', views.signup, name="sign_up_page"),
     url(r'^loginwindow/$', views.login_window, name="login_window"),
     #url(r'^account_created/$', views.account_created, name="account_created"),
@@ -11,7 +13,7 @@ urlpatterns = [
     url(r'^index/$', views.index, name="index"),
     url(r'^user_index/$', views.user_index, name="user_index"),
     url(r'^books/$', views.books ,name = "books_page"),
-    url(r'^bookdetails(?P<books_id>\d+)/$', views.book_details ,name = "book_details"),
+    url(r'^bookdetails/(?P<books_id>\d+)/$', views.book_details ,name = "book_details"),
     url(r'^addbook/$', views.add_book, name="add_book"),
     url(r'^authors/$', views.authors, name="authors_page"),
     url(r'^addauthor/$', views.add_author, name="add_author"),

@@ -24,7 +24,7 @@
 				
 				<input  class="add" type="button" id="add_account" value="Create an account" />
 				<div id="signup_dialog" style="display: none" align = "left">
-                <form action="{% url 'sign_up_page' %}"  method="post">
+                <form action="{% url 'admin_sign_up_page' %}"  method="post">
 
                     {% csrf_token %}
                     {{form.as_p}}
