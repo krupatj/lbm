@@ -1,0 +1,48 @@
+
+{% extends base_page %}
+{% block title %} Book Details <{% endblock %}
+{% block content %}
+<div class = "book_data_list"> 
+         
+        <div class="singlebook_div">
+            <form action = "{% url "user_lend_book" book.id %}" method="post">
+                {% csrf_token %}
+                <button id="lend_book">LEND THIS BOOK</button>
+            </form>
+            {%for image in book.photos.all%}
+                <div class="books_images">
+
+                    <img  id ="book" src="{{image.photo.url}}"/>
+
+                </div>
+            {%endfor%}
+            <table class="book_table">
+            <tr>
+                <td>TITLE: </td>
+                <td>{{book.book_title}}</td>
+            </tr>
+            <tr>
+            <td>AUTHOR:</td>
+                {%for author in book.authors.all%}
+                    <td >{{author.first_name}} {{author.last_name}} </td>
+                {%endfor%}  
+            </tr>   
+            <tr>
+                <td>DESCRIPTION: </td>
+                <td>{{book.description}}</td>
+            </tr>
+            <tr>        
+            <tr>
+                <td>STOCK COUNT:</td>
+                <td>{{book.stock_count}}</td>
+            </tr>
+            <tr>
+                <td>REVIEW:</td>
+                    {%for review in book.reviews.all%}
+                        <td class ="review">{{review.review}}</td>
+                    {%endfor%}   
+            </tr>  
+            </table>    
+        </div>
+</div>
+{% endblock %}

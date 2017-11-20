@@ -100,7 +100,10 @@ class BookDetailsView(DetailView):
 
 
 class LendRequestView(View):
-
+    """Purpose: Displays a list of lend requests made by all the users
+       Input:None
+       Returns:Redirects the lend request page
+    """
     @cache_control(no_cache=True, must_revalidate=True, no_store=True)
     def get(self, request):
         if  not request.user.is_superuser:
@@ -180,7 +183,10 @@ class BorrowedBooksView(View):
 
 
 class ReturnRequestView(View):
-
+    """Purpose:displays the return requests made by the users
+       Input :none
+       return:returnrequest.html page is rendered
+    """
     @cache_control(no_cache=True, must_revalidate=True, no_store=True)
     def get(self, request):
         if not request.user.is_superuser:
@@ -237,7 +243,11 @@ class AuthorView(View):
 
     @cache_control(no_cache=True, must_revalidate=True, no_store=True)
     def get(self, request):
-
+        """
+        Displays the list of authors with necessary details 
+        Input:None
+        Returns:Redirects the authors page displaying list of authors
+        """
         if not request.user.is_authenticated:
             return HttpResponseRedirect('/signup/')
         authors_list = Author.objects.order_by("first_name")

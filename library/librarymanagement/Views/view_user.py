@@ -82,6 +82,10 @@ class UserActionsView(View):
 
     @cache_control(no_cache=True, must_revalidate=True, no_store=True)
     def user_lend_book(request,requested_book_id):
+        """Purpose: Enables the user to make a lend request
+           Input:return_book_id
+           Returns:Redirects the book list page
+        """
         if  not request.user.is_authenticated:
             return HttpResponseRedirect('/signup/')
 
