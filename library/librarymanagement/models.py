@@ -8,25 +8,34 @@ from django.contrib.auth.models import User
 STATUS_CHOICES = (
         ('Pending', 'Pending'),
         ('Approved', 'Approved'),
-        ('Rejected', 'Rejected')
+        ('Rejected', 'Rejected'),
+        ('Return_requested', 'Return_requested')
     )
+
 DECISION_CHOICES = (
         ('Approve', 'Approve'),
         ('Reject', 'Reject'),
         ('On Hold', 'On Hold')
     )
+
 RETURN_STATUS_CHOICES = (
         ('Received', 'Received'),
         ('Not Received', 'Not Received')
     )
+
 CHANGE_STATUS = (
         ('Received', 'Received'),
         ('Not Received', 'Not Received')
     )
 
+REVIEW_STATUS = (
+        ('Complete', 'Complete'),
+        ('Not Complete', 'Not Complete')
+    )
+
 
 class CustomUsers(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, default="", editable=False)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'")
     phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=True) # validators should be a list
 
@@ -67,14 +76,14 @@ class Photo(models.Model):
     book_title = models.CharField(max_length=100, blank=True)
     
     def __str__(self):
-        return self.book_title
+        return self.book.book_title
 
 class LendRequest(models.Model):
     user = models.ForeignKey(CustomUsers, null=False, related_name="lendrequests")
     book = models.ManyToManyField(Book, related_name="books")
-    date = models.DateTimeField(default=datetime.datetime.now() , blank=False)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
-    final_decision = models.CharField(max_length=10, choices=DECISION_CHOICES)
+    date = models.DateTimeField(blank=False)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES)
+    final_decision = models.CharField(max_length=30, choices=DECISION_CHOICES)
 
    
     def __str__(self):
@@ -83,9 +92,10 @@ class LendRequest(models.Model):
 class ReturnRequest(models.Model):
     user = models.ForeignKey(CustomUsers, null=False, related_name="user_return")
     book = models.ManyToManyField(Book, related_name="book_return")
-    date = models.DateTimeField(default=datetime.datetime.now() , blank=False)
+    date = models.DateTimeField(blank=False)
     return_status = models.CharField(max_length=30, choices=RETURN_STATUS_CHOICES)
     change_status = models.CharField(max_length=30, choices=CHANGE_STATUS)
+    review_status = models.CharField(max_length=30, null="true",default='Not Complete', choices=REVIEW_STATUS)
 
     def __str__(self):
        return self.return_status

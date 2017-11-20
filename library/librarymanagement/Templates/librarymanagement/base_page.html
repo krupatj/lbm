@@ -18,11 +18,10 @@
 	<div class="container">
 		<header>
 			<div id="header_top">
-				<p><a href="#">Welcome</a></p>
 			</div>
 			<div id="header_center">
 				
-				<input  class="add" type="button" id="add_account" value="Create an account" />
+				<input  class="add" type="button" id="add_account" value="Create an account" /> 
 				<div id="signup_dialog" style="display: none" align = "left">
                 <form action="{% url 'sign_up_page' %}"  method="post">
 
@@ -32,12 +31,11 @@
                     <button id="signup_submit">Submit data</button>
                 
                 </form>
-            </div>
-            <input  class="add" type="button" id="btnShow2" value="Login" />
+                </div>
+                <input  class="add" type="button" id="btnShow2" value="Login" />
             <div id="login_dialog" style="display: none" align = "left">
             <form action="{% url 'login_window' %}"  method="post">
-
-            	    {% csrf_token %}
+                {% csrf_token %}
                     <p>UserName</p>
                     <input type="text" name="username">
                 
@@ -50,9 +48,12 @@
 		</header>
 		<div class="body1">
 		    {% block content %}
+
 		        {% if messages %}
                     {% for message in messages %}
-                       <div class="error_message {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+                       <div class="error_message {% if message.tags %} alert-{{ message.tags }}  <p>Please correct the following errors!{% endif %}"></p>{{ message|safe }}
+                           
+                       </div>
                     {% endfor %}
                 {% endif %}
 			<div class="logo">

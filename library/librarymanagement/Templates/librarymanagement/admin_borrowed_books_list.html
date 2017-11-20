@@ -1,4 +1,4 @@
-{% extends "librarymanagement\user_index.html" %}
+{% extends "librarymanagement\admin_index.html" %}
 {% block content %}
 	
 <h3 id="title">Borrowed Books</h3>
@@ -21,17 +21,29 @@
     <table class="table">
         <tr>  
             <th>SL.NO</th>
+            <th>User</th>
+            <th>Date of Request</th>
             <th>Book</th>
             <th>Status</th>
+           
+            {% if  not request.user.is_superuser %}
+                <th>Action</th>
+            {% endif %}
+
         </tr>
+        
         {% for books in book_list %}
-        <tr>
+        <tr> 
             <td>{{forloop.counter}}</td>
+            <td>{{books.user}}</td>
             <td>{{books.date}}</td> 
+
             {%for book in books.book.all%}
                 <td>{{book}}</td>
             {%endfor%}             
             <td>{{books.status}}</td>
+            {%for book in books.book.all%}
+            {% endfor %}
         </tr>
             {%endfor%}   
     </table>

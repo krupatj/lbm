@@ -25,6 +25,7 @@
                 <th>Date of Request</th> 
                 <th>Book</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
             {% for return in return_list %}
 
@@ -38,7 +39,7 @@
                 
                 {% if return.return_status == 'Received' %}
                         {%for book in return.book.all%}
-                            <form action = "{% url 'user_write_review' book.id %}" method="post">
+                            <form action = "{% url 'user_write_review' book.id return.id %}" method="post">
                                 {% csrf_token %}
                                 <td><button class="reject" type="submit">Write a Review</button></td>
                            </form>

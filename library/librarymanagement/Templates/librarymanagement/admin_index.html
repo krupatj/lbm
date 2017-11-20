@@ -24,14 +24,15 @@
 			</div>
 			<div id="header_center">
 				<p><a href="{% url 'logoutwindow' %}">Logout</a></p>
-			</div>
+			</div> 
 		</header>
 		<div class="body1">
 			<div class = nav_bar>
             <ul>
-                <li><a href="{% url 'books_page_class' %}">Books</a></li>
+                <li><a href="{% url 'books_page' %}">Books</a></li>
                 <li><a href="{% url 'authors_page' %}">Authors</a></li>
                 <li><a href="{% url 'lend_page' %}">Lend Request</a></li>
+                <li><a href="{% url 'borrowed_books' %}">Borrowed Books</a></li>
                 <li><a href="{% url 'return_page' %}">Return Request</a></li>
                
             </ul>

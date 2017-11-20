@@ -21,22 +21,25 @@
     <table class="table">
         <tr>  
             <th>SL.NO</th>
+            
             <th>Date of Request</th>
             <th>Book</th>
             <th>Status</th>
-            <th></th>
+            <th>Action</th>
 
         </tr>
+
         {% for books in book_list %}
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{books.date}}</td> 
+
             {%for book in books.book.all%}
                 <td>{{book}}</td>
             {%endfor%}             
             <td>{{books.status}}</td>
             {%for book in books.book.all%}
-                <form action = "{% url 'user_return_book' book.id %}" method="post">
+                <form action = "{% url 'user_return_book' book.id  books.id  %}" method="post">
                     {% csrf_token %}
                     <td><button type="submit" class="approve">Return This Book </button></td>
                 </form>

@@ -9,12 +9,51 @@ body {
 }
 .error_message{
 	width: 400px;
-    margin-left: 533px;
+    margin-left: 49px;
+    
+    height: 200px;
+    font-size: 18px;
+    
+}
+.error_message p{
+	color: white;
+}
+.error_message_authors{
+	width: 400px;
+    margin-left: 49px;
+    margin-top:-142px;
+    height: 200px;
+    font-size: 18px;
+    
+}
+.error_message_authors{
+	color: white;
+	color: red;
 }
 .info_message{
 	width: 400px;
     margin-left: 533px;
     font-size: 15px;
+    color: red;
+}
+.error_message_type2{
+	width: 400px;
+    margin-left: 49px;
+    height: 60px;
+    font-size: 18px;
+    margin-top: -224px; 
+    margin-left: 848px;   
+    color: red;
+}
+.error_message_type3{
+	width: 400px;
+    margin-left: 49px;
+    height: 60px;
+    font-size: 18px;
+    margin-top: -165px; 
+    margin-left: 848px;   
+    float: left;
+    color: red;
 }
 
 header{

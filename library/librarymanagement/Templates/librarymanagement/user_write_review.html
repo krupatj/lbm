@@ -2,7 +2,7 @@
 {% block title %}Write Review<{% endblock %}
 {% block content %}
 <div class="review_book">
-    <form action =  "{% url 'user_submit_review' book_id %}" method="post">
+    <form action =  "{% url 'user_submit_review' book_id return_id %}" method="post">
         {% csrf_token %}
 
         <p class="review_head">Please type your review here</p>

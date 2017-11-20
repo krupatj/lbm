@@ -1,4 +1,4 @@
-{% extends "librarymanagement\index.html" %}
+{% extends "librarymanagement\admin_index.html" %}
 {% block title %}Return Requests{% endblock %}
 {% block content %}
 	
@@ -45,7 +45,7 @@
                         {% csrf_token %}
                         <button  class="approve" type="submit">Received</button>
                      </form>
-                     <form action = "{% url 'reject_return_request' return.id %}" method="post">
+                     <form action = "{% url 'approve_return_request' return.id %}" method="post">
                         {% csrf_token %}
                         <button  class="reject" type="submit">Not Received</button>
                      </form>

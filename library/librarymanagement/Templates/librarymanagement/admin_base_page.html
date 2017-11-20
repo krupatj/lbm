@@ -24,7 +24,7 @@
 				
 				<input  class="add" type="button" id="add_account" value="Create an account" />
 				<div id="signup_dialog" style="display: none" align = "left">
-                <form action="{% url 'admin_sign_up_page' %}"  method="post">
+                <form action="{% url 'sign_up_page' %}"  method="post">
 
                     {% csrf_token %}
                     {{form.as_p}}
@@ -52,7 +52,10 @@
 		    {% block content %}
 		        {% if messages %}
                     {% for message in messages %}
-                       <div class="error_message {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+
+                       <div class="error_message {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}
+                          
+                       </div>
                     {% endfor %}
                 {% endif %}
 			<div class="logo">

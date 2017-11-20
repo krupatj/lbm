@@ -2,7 +2,7 @@
 {% block title %}My Return Requests<{% endblock %}
 {% block content %}
 	
-<h3 id="title">My Lend Requests</h3>
+<h3 id="title">Lend Requests</h3>
 <div class="pagination">
                 <span class="step-links">
                 {% if lend_list.has_previous %}
@@ -30,8 +30,8 @@
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{lend.date}}</td> 
-            {%for book in lend.book.all%}
-                <td>{{book}}</td>
+            {% for book in lend.book.all%}
+                <td>{{book.book_title}}</td>
             {%endfor%}             
             <td>{{lend.status}}</td>
         </tr>

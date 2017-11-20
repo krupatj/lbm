@@ -1,4 +1,4 @@
-{% extends "librarymanagement\index.html" %}
+{% extends "librarymanagement\admin_index.html" %}
 {% block title %}Lend Requests{% endblock %}
 {% block content %}
 <h3 id="title">Lend Requests</h3>
@@ -42,7 +42,7 @@
                     <form action = "{% url 'approve_lend_request' lend.id %}" method="post">
                         {% csrf_token %}
                         <button type="submit" class="approve">Approve</button>
-                     </form>
+                    </form>
 
                      <form action = "{% url 'reject_lend_request' lend.id %}" method="post">
                         {% csrf_token %}
@@ -50,8 +50,16 @@
                      </form>
                 </td>
             </tr>
-             {%endfor%}   
+            {%endfor%}   
         </table>
+        {% if messages %}
+                    {% for message in messages %}
+
+                       <div class="error_message_type2" {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}
+                          
+                       </div>
+                    {% endfor %}
+                {% endif %}
             
 </div>
 
