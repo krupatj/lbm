@@ -31,7 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
     'librarymanagement.apps.LibrarymanagementConfig',
+    'userinterface.apps.UserinterfaceConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,7 +78,7 @@ WSGI_APPLICATION = 'library.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'librarymanagement',                      
+        'NAME': 'librarymanagement2',                      
         'USER': 'postgres',
         'PASSWORD': 'nelluvely123',
         'HOST': 'localhost',
