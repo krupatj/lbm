@@ -45,7 +45,7 @@
                         {% csrf_token %}
                         <button  class="approve" type="submit">Received</button>
                      </form>
-                     <form action = "{% url 'approve_return_request' return.id %}" method="post">
+                     <form action = "{% url 'reject_return_request' return.id %}" method="post">
                         {% csrf_token %}
                         <button  class="reject" type="submit">Not Received</button>
                      </form>

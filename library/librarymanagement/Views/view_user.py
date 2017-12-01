@@ -21,6 +21,7 @@ def user_index(request):
     Returns:user redireded to user home page
     """
     if  not request.user.is_authenticated:
+    	
         return HttpResponseRedirect('/signup/')
     user = request.user.first_name
     return render(request, 'librarymanagement/user_index.html', {'user':user})
@@ -79,8 +80,6 @@ class UserRequestsView(View):
 
 class UserActionsView(View):
 
-
-    @cache_control(no_cache=True, must_revalidate=True, no_store=True)
     def user_lend_book(request,requested_book_id):
         """Purpose: Enables the user to make a lend request
            Input:return_book_id
@@ -89,20 +88,27 @@ class UserActionsView(View):
         if  not request.user.is_authenticated:
             return HttpResponseRedirect('/signup/')
 
-        #book_requested = requested_book_id
         final_user_id = CustomUsers.objects.get(user_id=request.user.id).pk
         book = Book.objects.get(id=requested_book_id)
-        if not book.stock_count == 0:
-            lend_request = LendRequest(user_id=final_user_id,date=datetime.datetime.now(),
+        lend_list = LendRequest.objects.filter(user_id=final_user_id,status='Pending',book =requested_book_id )
+        print (lend_list)
+        if not lend_list :
+            print("-------------")
+            print ("no prior requests!!")
+            if not book.stock_count == 0:
+                lend_request = LendRequest(user_id=final_user_id,date=datetime.datetime.now(),
                                        status='Pending',final_decision='On Hold')
-            lend_request.save()
-            lend_request.book.add(requested_book_id)
-            lend_request.save()
-        else:
-            messages.info(request, 'Couldnt make the request..Empty Stock!!')
-        return HttpResponseRedirect('/books_list/')
-
-
+                lend_request.save()
+                lend_request.book.add(requested_book_id)
+                lend_request.save()
+            else:
+               #messages.info(request, 'Couldnt make the request..Empty Stock!!')
+               return HttpResponseRedirect('/books_list/')   
+        else:   
+            print("-------------")
+            #messages.info(request, 'You have already made a request for the book!')
+            return HttpResponseRedirect('/books_list/') 
+              
     def user_return_book(request, return_book_id, lend_id):
         """Purpose: Enables the user to make a return request
            Input:return_book_id

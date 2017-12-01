@@ -62,7 +62,7 @@ class BookList(ListView):
         """
         base_page = 'librarymanagement/admin_index.html'
         if  not request.user.is_authenticated:
-            return HttpResponseRedirect('/signup/')
+            next_page = '/signup/'
        
         if request.method == 'POST':
             form = AddBookForm(request.POST,request.FILES)
@@ -71,14 +71,14 @@ class BookList(ListView):
                 validated_form = form.save()
                 photo = Photo(photo=book_image, book_title=validated_form.book_title, book_id=validated_form.pk)
                 photo.save()
-                return HttpResponseRedirect('/books_list/')
+                next_page = '/books_list/'
+                #return HttpResponseRedirect('/books_list/')
             else:
                errors = form.errors
                messages.info(request, form.errors)
-               return HttpResponseRedirect('/books_list/')
-        else:
-            return render(request, 'librarymanagement/books_class.html')
-        return HttpResponseRedirect('/signup/')
+               next_page = '/books_list/'
+               #return HttpResponseRedirect('/books_list/')
+        return HttpResponseRedirect(next_page)
         
 
 class BookDetailsView(DetailView):
@@ -149,7 +149,8 @@ class LendRequestView(View):
             Returns:Redirects the lendrequest view
         """
         if  not request.user.is_superuser:
-            return HttpResponseRedirect('/signup/')
+            next_page = '/signup/'
+            #return HttpResponseRedirect('/signup/')
 
         if request.method == 'POST':
             lender = LendRequest.objects.get(pk=lend_id)
@@ -158,10 +159,13 @@ class LendRequestView(View):
             if lender.status != lender.final_decision:
                 lender.status = lender.final_decision
             lender.save()
-            return HttpResponseRedirect('/lendrequests/')
+            next_page = '/lendrequests/'
+            #return HttpResponseRedirect('/lendrequests/')
         else:
-            return HttpResponseRedirect('/signup/')
-
+            next_page = '/signup/'
+            #return HttpResponseRedirect('/signup/')
+        return HttpResponseRedirect(next_page)
+        
 class BorrowedBooksView(View):
     """Purpose: Displays a list of borrow requests made by all users 
         Input:None

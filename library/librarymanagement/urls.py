@@ -6,9 +6,15 @@ from .Views.authentications_view import *
 from .Views import view_user
 from .Views import basepages_view
 from .Views import authentications_view
+from .Views import view_api
+from webapp import views
+
 
 urlpatterns = [
-   
+
+    url(r'^employees/', views.employee_list.as_view()),
+     url(r'^books/', view_api.BookList.as_view()),
+
     url(r'^$', authentications_view.Authentication.as_view(), name="sign_up_page"),
     url(r'^basepage/$', authentications_view.Authentication.as_view(), name="base_page_class"),
     url(r'^loginwindow/$', authentications_view.LoginView.as_view(), name="login_window"),
